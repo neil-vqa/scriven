@@ -1,0 +1,26 @@
+{
+    "manifest_version": 3,
+    "name": "Scriven",
+    "version": "1.0",
+    "description": "Write notes to YouTube videos.",
+    "permissions": [
+        "storage"
+    ],
+    "host_permissions": [
+        "*://*.youtube.com/*"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.youtube.com/watch*"
+            ],
+            "js": [
+                "ui.js",
+                "content.js"
+            ]
+        }
+    ]
+}
