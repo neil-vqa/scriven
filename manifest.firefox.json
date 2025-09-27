@@ -10,7 +10,10 @@
         "*://*.youtube.com/*"
     ],
     "background": {
-        "service_worker": "background.js"
+        "scripts": [
+            "lib/browser-polyfill.min.js",
+            "src/background.js"
+        ]
     },
     "content_scripts": [
         {
@@ -18,9 +21,15 @@
                 "*://*.youtube.com/watch*"
             ],
             "js": [
-                "ui.js",
-                "content.js"
+                "lib/browser-polyfill.min.js",
+                "src/ui.js",
+                "src/content.js"
             ]
         }
-    ]
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "scriven@neilvan.com"
+        }
+    }
 }
