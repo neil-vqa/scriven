@@ -222,11 +222,13 @@ function addNoteToList(note, currentVideoId) {
 
   deleteButton.onclick = () => {
     listItem.remove();
-    chrome.runtime.sendMessage({
-      action: "deleteNote",
-      videoId: currentVideoId,
-      note: { id: note.id },
-    });
+    browser.runtime
+      .sendMessage({
+        action: "deleteNote",
+        videoId: currentVideoId,
+        note: { id: note.id },
+      })
+      .catch((e) => console.error("Error deleting note:", e));
   };
 
   editButton.onclick = () => {
@@ -248,7 +250,9 @@ function addNoteToList(note, currentVideoId) {
         note.text = newText;
         textSpan.textContent = newText;
 
-        chrome.runtime.sendMessage({ action: "updateNote", note: note });
+        browser.runtime
+          .sendMessage({ action: "updateNote", note: note })
+          .catch((e) => console.error("Error updating note:", e));
 
         contentDiv.replaceChild(textSpan, editArea);
         actionsDiv.replaceChild(editButton, saveEditButton);
@@ -294,19 +298,17 @@ function injectUI(currentVideoId, onSave) {
 }
 
 function loadNotes(currentVideoId) {
-  chrome.runtime.sendMessage(
-    { action: "getNotes", videoId: currentVideoId },
-    (notes) => {
-      if (chrome.runtime.lastError) {
-        console.error(chrome.runtime.lastError.message);
-        return;
-      }
+  browser.runtime
+    .sendMessage({ action: "getNotes", videoId: currentVideoId })
+    .then((notes) => {
       const notesList = document.getElementById("yn-notes-list");
-      if (notesList) {
+      if (notesList && notes) {
         notesList.innerHTML = "";
         notes.sort((a, b) => a.timestamp - b.timestamp);
         notes.forEach((note) => addNoteToList(note, currentVideoId));
       }
-    }
-  );
+    })
+    .catch((error) => {
+      console.error("Error loading notes:", error.message);
+    });
 }

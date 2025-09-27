@@ -15,15 +15,18 @@ function handleSaveNote(videoId) {
       timestamp: videoElement.currentTime,
       text: noteText.trim(),
     };
-    chrome.runtime.sendMessage(
-      { action: "saveNote", videoId: videoId, note: newNote },
-      (response) => {
-        if (response.success) {
+    browser.runtime
+      .sendMessage({ action: "saveNote", videoId: videoId, note: newNote })
+      .then((response) => {
+        if (response && response.success) {
           newNote.id = response.newId;
+          newNote.videoId = videoId;
           addNoteToList(newNote, videoId);
         }
-      }
-    );
+      })
+      .catch((error) => {
+        console.error("Error saving note:", error);
+      });
     noteInput.value = "";
   }
 }

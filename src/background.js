@@ -1,6 +1,14 @@
+try {
+  if (typeof importScripts === "function") {
+    importScripts("../lib/browser-polyfill.min.js");
+  }
+} catch (e) {
+  console.error(e);
+}
+
 console.log("Scriven extension: Background script loaded.");
 
-const DB_NAME = "YouTubeNotesDB";
+const DB_NAME = "ScrivenDB";
 const STORE_NAME = "notes";
 let db;
 
@@ -71,7 +79,7 @@ async function updateNote(note) {
 
 initDB();
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const { videoId, note } = message;
 
   if (message.action === "saveNote") {
