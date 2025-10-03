@@ -118,5 +118,21 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse(results);
     });
     return true;
+  } else if (message.action === "getAllVideosWithNotes") {
+    getAllNotes().then((allNotes) => {
+      const videos = new Map();
+      allNotes.forEach((note) => {
+        if (!videos.has(note.videoId)) {
+          videos.set(note.videoId, {
+            videoId: note.videoId,
+            title: note.title || "Untitled Video",
+            noteCount: 0,
+          });
+        }
+        videos.get(note.videoId).noteCount++;
+      });
+      sendResponse(Array.from(videos.values()));
+    });
+    return true;
   }
 });

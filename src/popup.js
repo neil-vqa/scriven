@@ -126,6 +126,45 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
   }
+
+  const showAllVideosBtn = document.getElementById("show-all-videos-btn");
+  const allVideosListContainer = document.getElementById("all-videos-list");
+
+  showAllVideosBtn.addEventListener("click", () => {
+    browser.runtime
+      .sendMessage({ action: "getAllVideosWithNotes" })
+      .then(displayAllVideos);
+  });
+
+  function displayAllVideos(videos) {
+    allVideosListContainer.innerHTML = "";
+
+    if (!videos || videos.length === 0) {
+      const noResultsMessage = document.createElement("li");
+      noResultsMessage.textContent = "No videos with notes found.";
+      noResultsMessage.style.padding = "8px";
+      allVideosListContainer.appendChild(noResultsMessage);
+      return;
+    }
+
+    videos.sort((a, b) => a.title.localeCompare(b.title));
+
+    videos.forEach((video) => {
+      const item = document.createElement("li");
+      item.className = "video-list-item";
+      item.innerHTML = `
+        <span class="video-title">${video.title}</span>
+        <span class="note-count">${video.noteCount} notes</span>
+      `;
+
+      item.addEventListener("click", () => {
+        const url = `https://www.youtube.com/watch?v=${video.videoId}`;
+        browser.tabs.create({ url: url });
+      });
+
+      allVideosListContainer.appendChild(item);
+    });
+  }
 });
 
 function formatTimestamp(totalSeconds) {

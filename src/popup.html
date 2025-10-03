@@ -112,6 +112,41 @@
         color: #777;
         margin-top: 4px;
       }
+      #all-videos-list {
+        margin-top: 10px;
+        max-height: 250px;
+        overflow-y: auto;
+        list-style-type: none;
+        padding: 0;
+      }
+      .video-list-item {
+        padding: 10px 8px;
+        border-bottom: 1px dotted #dbdbdb;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .video-list-item:hover {
+        background-color: #f3f3e9;
+      }
+      .video-list-item .video-title {
+        font-size: 0.9rem;
+        font-weight: bold;
+        color: #333;
+        white-space: normal;
+        word-wrap: break-word;
+        flex-grow: 1;
+        margin-right: 10px;
+      }
+      .video-list-item .note-count {
+        font-size: 0.8rem;
+        color: #fff;
+        background-color: #a7bba0;
+        padding: 3px 8px;
+        border-radius: 12px;
+        white-space: nowrap;
+      }
     </style>
   </head>
   <body>
@@ -135,6 +170,13 @@
         <button id="search-btn">Search</button>
       </div>
       <ul id="search-results"></ul>
+    </section>
+
+    <section>
+      <button id="show-all-videos-btn" style="width: 100%; padding: 8px">
+        Show All Videos with Notes
+      </button>
+      <ul id="all-videos-list"></ul>
     </section>
 
     <script src="../lib/browser-polyfill.min.js"></script>
