@@ -11,11 +11,17 @@ function handleSaveNote(videoId) {
   const noteInput = document.getElementById("yn-note-input");
   const noteText = noteInput.value;
   const videoElement = document.querySelector("video.html5-main-video");
+
+  const titleElement = document.querySelector("#title h1 yt-formatted-string");
+  const videoTitle = titleElement ? titleElement.textContent : "Untitled Video";
+
   if (noteText.trim() !== "" && videoElement) {
     const newNote = {
       timestamp: videoElement.currentTime,
       text: noteText.trim(),
+      title: videoTitle,
     };
+
     browser.runtime
       .sendMessage({ action: "saveNote", videoId: videoId, note: newNote })
       .then((response) => {

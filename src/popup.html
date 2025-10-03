@@ -5,7 +5,7 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        width: 300px; /* Increased width for search results */
+        width: 300px;
         padding: 10px;
         margin: 0;
         box-sizing: border-box;
@@ -63,8 +63,6 @@
       input:checked + .slider:before {
         transform: translateX(26px);
       }
-
-      /* Search Styles */
       #search-container {
         display: flex;
         flex-direction: column;
@@ -102,6 +100,12 @@
         font-size: 0.9rem;
         white-space: pre-wrap;
         word-wrap: break-word;
+      }
+      .search-result-item .note-title {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 4px;
       }
       .search-result-item .note-meta {
         font-size: 0.75rem;

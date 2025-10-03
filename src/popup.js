@@ -76,6 +76,56 @@ document.addEventListener("DOMContentLoaded", async () => {
       searchResultsContainer.appendChild(item);
     });
   }
+
+  function displaySearchResults(notes) {
+    searchResultsContainer.innerHTML = "";
+
+    if (!notes || notes.length === 0) {
+      const noResultsMessage = document.createElement("li");
+      noResultsMessage.textContent = "No notes found.";
+      noResultsMessage.style.padding = "8px";
+      searchResultsContainer.appendChild(noResultsMessage);
+      return;
+    }
+
+    const notesByVideo = notes.reduce((acc, note) => {
+      if (!acc[note.videoId]) {
+        acc[note.videoId] = {
+          title: note.title,
+          notes: [],
+        };
+      }
+      acc[note.videoId].notes.push(note);
+      return acc;
+    }, {});
+
+    for (const videoId in notesByVideo) {
+      const video = notesByVideo[videoId];
+
+      video.notes.sort((a, b) => a.timestamp - b.timestamp);
+
+      video.notes.forEach((note) => {
+        const item = document.createElement("li");
+        item.className = "search-result-item";
+        item.innerHTML = `
+                <div class="note-title">${note.title || "Untitled Video"}</div>
+                <div class="note-text">${note.text}</div>
+                <div class="note-meta">Timestamp: ${formatTimestamp(
+                  note.timestamp
+                )}</div>
+            `;
+
+        item.addEventListener("click", () => {
+          const url = `https://www.youtube.com/watch?v=${
+            note.videoId
+          }&t=${Math.floor(note.timestamp)}s`;
+          browser.tabs.create({ url: url });
+        });
+
+        searchResultsContainer.appendChild(item);
+      });
+    }
+  }
 });
 
 function formatTimestamp(totalSeconds) {
