@@ -165,6 +165,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       allVideosListContainer.appendChild(item);
     });
   }
+
+  const exportDataBtn = document.getElementById("export-data-btn");
+
+  exportDataBtn.addEventListener("click", () => {
+    browser.runtime.sendMessage({ action: "exportAllNotes" });
+
+    const originalText = exportDataBtn.textContent;
+    exportDataBtn.textContent = "Exporting...";
+    exportDataBtn.disabled = true;
+
+    setTimeout(() => {
+      exportDataBtn.textContent = originalText;
+      exportDataBtn.disabled = false;
+    }, 2000);
+  });
 });
 
 function formatTimestamp(totalSeconds) {

@@ -88,6 +88,38 @@ async function getAllNotes() {
   });
 }
 
+function exportNotesToJson(notes) {
+  if (!notes || notes.length === 0) {
+    console.log("No notes to export.");
+    return;
+  }
+
+  const jsonString = JSON.stringify(notes, null, 2);
+  const blob = new Blob([jsonString], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, "-");
+  const filename = `scriven_export_${timestamp}.json`;
+
+  browser.downloads
+    .download({
+      url: url,
+      filename: filename,
+      saveAs: true,
+    })
+    .then((downloadId) => {
+      // After the download starts, Chrome/Firefox invalidates the blob URL.
+      // We don't strictly need to revoke it here, but it's good practice.
+      // We check if the download started before revoking.
+      if (downloadId) {
+        console.log("Export started with download ID:", downloadId);
+      }
+    })
+    .catch((err) => {
+      console.error("Export failed:", err);
+    });
+}
+
 initDB();
 
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -134,5 +166,9 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse(Array.from(videos.values()));
     });
     return true;
+  } else if (message.action === "exportAllNotes") {
+    getAllNotes().then((notes) => {
+      exportNotesToJson(notes);
+    });
   }
 });

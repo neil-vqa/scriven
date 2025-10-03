@@ -5,7 +5,8 @@
     "description": "Write notes to YouTube videos.",
     "permissions": [
         "storage",
-        "tabs"
+        "tabs",
+        "downloads"
     ],
     "host_permissions": [
         "*://*.youtube.com/*"
