@@ -1,6 +1,7 @@
 console.log("Scriven extension: Content script loaded.");
 
 let currentVideoId = null;
+const storageKey = "scrivenUiVisible";
 
 function getVideoId() {
   return new URLSearchParams(window.location.search).get("v");
@@ -31,7 +32,16 @@ function handleSaveNote(videoId) {
   }
 }
 
-function main() {
+async function main() {
+  const data = await browser.storage.local.get(storageKey);
+  const isVisible = data[storageKey] !== false;
+
+  if (isVisible) {
+    runInjectionLogic();
+  }
+}
+
+function runInjectionLogic() {
   setInterval(() => {
     const newVideoId = getVideoId();
     if (newVideoId) {
@@ -46,5 +56,22 @@ function main() {
     }
   }, 1000);
 }
+
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "toggleUI") {
+    const uiContainer = document.getElementById("youtube-notes-container");
+    if (message.visible) {
+      if (!uiContainer) {
+        runInjectionLogic();
+      } else {
+        uiContainer.style.display = "flex";
+      }
+    } else {
+      if (uiContainer) {
+        uiContainer.style.display = "none";
+      }
+    }
+  }
+});
 
 main();

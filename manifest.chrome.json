@@ -4,7 +4,8 @@
     "version": "1.0",
     "description": "Write notes to YouTube videos.",
     "permissions": [
-        "storage"
+        "storage",
+        "tabs"
     ],
     "host_permissions": [
         "*://*.youtube.com/*"
@@ -23,5 +24,9 @@
                 "src/content.js"
             ]
         }
-    ]
+    ],
+    "action": {
+        "default_popup": "src/popup.html",
+        "default_title": "Scriven - Toggle Notes UI"
+    }
 }

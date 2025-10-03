@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scriven Control</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        width: 300px; /* Increased width for search results */
+        padding: 10px;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      h4 {
+        text-align: center;
+        margin-top: 0;
+      }
+      section {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+      }
+      section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+      .switch {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        height: 34px;
+      }
+      .switch-label {
+        margin-left: 70px;
+      }
+      .switch input {
+        display: none;
+      }
+      .slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 34px;
+        width: 60px;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: #a7bba0;
+      }
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+
+      /* Search Styles */
+      #search-container {
+        display: flex;
+        flex-direction: column;
+      }
+      #search-input {
+        width: 95%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      #search-btn {
+        margin-top: 8px;
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: 1px solid #a7bba0;
+        cursor: pointer;
+        background-color: transparent;
+      }
+      #search-results {
+        margin-top: 10px;
+        max-height: 250px;
+        overflow-y: auto;
+        list-style-type: none;
+        padding: 0;
+      }
+      .search-result-item {
+        padding: 8px;
+        border-bottom: 1px dotted #dbdbdb;
+        cursor: pointer;
+      }
+      .search-result-item:hover {
+        background-color: #f3f3e9;
+      }
+      .search-result-item .note-text {
+        font-size: 0.9rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+      .search-result-item .note-meta {
+        font-size: 0.75rem;
+        color: #777;
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h4>Scriven Control Center</h4>
+    <section>
+      <label class="switch">
+        <input type="checkbox" id="toggle-ui" />
+        <span class="slider"></span>
+        <span class="switch-label">Show floating UI</span>
+      </label>
+    </section>
+
+    <section>
+      <h5>Search All Notes</h5>
+      <div id="search-container">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search for text in notes..."
+        />
+        <button id="search-btn">Search</button>
+      </div>
+      <ul id="search-results"></ul>
+    </section>
+
+    <script src="../lib/browser-polyfill.min.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

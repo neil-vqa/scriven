@@ -4,7 +4,8 @@
     "version": "1.0",
     "description": "Write notes to YouTube videos.",
     "permissions": [
-        "storage"
+        "storage",
+        "tabs"
     ],
     "host_permissions": [
         "*://*.youtube.com/*"
@@ -27,6 +28,10 @@
             ]
         }
     ],
+    "action": {
+        "default_popup": "src/popup.html",
+        "default_title": "Scriven - Control Center"
+    },
     "browser_specific_settings": {
         "gecko": {
             "id": "scriven@neilvan.com"

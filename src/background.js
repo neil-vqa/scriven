@@ -77,6 +77,17 @@ async function updateNote(note) {
   });
 }
 
+async function getAllNotes() {
+  if (!db) await initDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction([STORE_NAME], "readonly");
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.getAll();
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = (event) => reject(event.target.error);
+  });
+}
+
 initDB();
 
 browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -97,6 +108,15 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
   } else if (message.action === "updateNote") {
     console.log("Updating note:", note);
     updateNote(note).then(() => sendResponse({ success: true }));
+    return true;
+  } else if (message.action === "searchAllNotes") {
+    getAllNotes().then((allNotes) => {
+      const query = message.query.toLowerCase();
+      const results = allNotes.filter((n) =>
+        n.text.toLowerCase().includes(query)
+      );
+      sendResponse(results);
+    });
     return true;
   }
 });
