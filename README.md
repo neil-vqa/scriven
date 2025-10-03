@@ -5,8 +5,8 @@ Write notes to YouTube videos.
 ## Screenshots
 
 <div>
-<img title="toggle button" alt="toggle button" src="./demo/ff-ss1.png">
-<img title="app panel" alt="app panel" src="./demo/ff-ss2.png">
+<img title="toggle button" alt="toggle button" src="./demo/scriven_ss04.png">
+<img title="app panel" alt="app panel" src="./demo/scriven_ss03.png">
 </div>
 
 ## Development & Packaging
